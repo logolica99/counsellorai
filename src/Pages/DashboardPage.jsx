@@ -10,22 +10,25 @@ export default function DashboardPage() {
       <div className="mt-6">
         <Link to="/application/12" className="flex mt-6  rounded justify-between items-center bg-lightCream px-6 py-4 border-b border-[#FFC422] hover:bg-opacity-70 duration-100 ease-in-out cursor-pointer">
           <p className="text-darkBlue font-bold">University of Pennsylvania</p>
-          <p className="text-[#8C722C] text-sm">
+          <p className="text-[#8C722C] text-[12px]">
             {formatTime(new Date().getTime())}
           </p>
         </Link>
-        <Link to="/application/12" className="flex  mt-6 rounded justify-between items-center bg-lightCream px-6 py-4 border-b border-[#FFC422] hover:bg-opacity-70 duration-100 ease-in-out cursor-pointer">
+       
+        <Link to="/application/12" className="flex mt-6  rounded justify-between items-center bg-lightCream px-6 py-4 border-b border-[#FFC422] hover:bg-opacity-70 duration-100 ease-in-out cursor-pointer">
           <p className="text-darkBlue font-bold">University of Pennsylvania</p>
-          <p className="text-[#8C722C] text-sm">
+          <p className="text-[#8C722C] text-[12px]">
             {formatTime(new Date().getTime())}
           </p>
         </Link>
-        <Link to="/application/12" className="flex  mt-6 rounded justify-between items-center bg-lightCream px-6 py-4 border-b border-[#FFC422] hover:bg-opacity-70 duration-100 ease-in-out cursor-pointer">
+       
+        <Link to="/application/12" className="flex mt-6  rounded justify-between items-center bg-lightCream px-6 py-4 border-b border-[#FFC422] hover:bg-opacity-70 duration-100 ease-in-out cursor-pointer">
           <p className="text-darkBlue font-bold">University of Pennsylvania</p>
-          <p className="text-[#8C722C] text-sm">
+          <p className="text-[#8C722C] text-[12px]">
             {formatTime(new Date().getTime())}
           </p>
         </Link>
+       
         
       </div>
     </div>

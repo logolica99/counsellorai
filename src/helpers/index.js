@@ -6,5 +6,5 @@ export function formatTime(timestamp) {
   const year = date.getFullYear().toString();
   const month = date.toLocaleString("en-US", { month: "short" });
 
-  return `${hours}:${minutes}, ${day} ${month} ${year}`;
+  return `${hours}:${minutes}, ${day} ${month}`;
 }
