@@ -8,7 +8,7 @@ export default function Homepage() {
     <div className="">
       <Nav />
       <div className="flex flex-col justify-center h-full min-h-[80vh] w-[90%] md:w-[80%] mx-auto">
-        <h1 className="text-[#003554] leading-none text-[40px] md:text-[70px] font-bold text-center">
+        <h1 className="text-darkBlue leading-none text-[40px] md:text-[70px] font-bold text-center">
           Craft Your Future <br />
           Today
         </h1>
