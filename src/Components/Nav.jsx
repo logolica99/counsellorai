@@ -1,5 +1,5 @@
 import { onAuthStateChanged, signOut } from "firebase/auth";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth } from "../firebase.config";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,24 +14,28 @@ import { UserContext } from "../contexts/UserContext";
 export default function Nav() {
   const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [isLoading, setIsLoading ,uid, setUid] = useContext(UserContext);
+  const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
   const [displayName, setDisplayName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
 
-  const handleMenuToggle = () => setMenuOpen(!menuOpen);
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsLoggedIn(true);
 
-  onAuthStateChanged(auth, (user) => {
-    if (user) {
-      setIsLoggedIn(true);
-      // setIsGamer({ hello: "yes" });
-      setUid(user.uid);
-      // setUser((prev) => ({ ...prev, uid: user.uid }));
-      setDisplayName(user.displayName);
-      setPhotoUrl(user.photoURL);
-    } else {
-      setIsLoggedIn(false);
-    }
-  });
+        if (uid != user.uid) {
+          setUid(user.uid);
+        }
+        // setUser((prev) => ({ ...prev, uid: user.uid }));
+        setDisplayName(user.displayName);
+        setPhotoUrl(user.photoURL);
+      } else {
+        setIsLoggedIn(false);
+      }
+    });
+  }, []);
+
+  //
 
   const navigate = useNavigate();
 
