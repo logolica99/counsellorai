@@ -1,7 +1,39 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import React, { useContext, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { auth } from "../firebase.config";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowRightFromBracket,
+  faBars,
+} from "@fortawesome/free-solid-svg-icons";
+import { IconButton, Tooltip } from "@mui/material";
+import { slide as Menu } from "react-burger-menu";
+import { UserContext } from "../contexts/UserContext";
 
 export default function Nav() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [user, setUser] = useContext(UserContext);
+  const [displayName, setDisplayName] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
+
+  const handleMenuToggle = () => setMenuOpen(!menuOpen);
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      setIsLoggedIn(true);
+
+      setUser((prev) => ({ ...prev, uid: user.uid }));
+      setDisplayName(user.displayName);
+      setPhotoUrl(user.photoURL);
+    } else {
+      setIsLoggedIn(false);
+    }
+  });
+
+  const navigate = useNavigate();
+
   return (
     <div>
       <div className="flex mt-8 mb-6 w-[90%] mx-auto items-center justify-between ">
@@ -12,20 +44,48 @@ export default function Nav() {
           Counsellorai
         </Link>
 
-        {true ? (
+        {isLoggedIn ? (
           <div>
-            <Link
-              to="/dashboard"
-              className="text-darkBlue font-bold px-4 md:px-8 py-2 md:py-3 hover:opacity-45 ease-in-out text-sm md:text-base"
-            >
-              Dashboard
-            </Link>
-            <Link
-              to="/profile"
-              className="text-red bg-lightCream font-bold px-4 md:px-8 py-2 md:py-3 hover:opacity-70 rounded-lg ease-in-out text-sm md:text-base"
-            >
-              John Doe
-            </Link>
+            <div className="flex items-center">
+              <Link
+                to="/dashboard"
+                className=" text-darkBlue font-bold px-4 md:px-8 py-2 md:py-3 hover:opacity-45 ease-in-out text-sm md:text-base"
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/profile"
+                className="
+               text-red flex items-center gap-2 bg-lightCream font-bold px-4 md:px-6 py-2 md:py-2 hover:opacity-70 rounded-lg ease-in-out text-sm md:text-base"
+              >
+                <img
+                  src={photoUrl}
+                  className=" w-6 h-6 rounded-full hidden md:block"
+                  alt=""
+                />
+                <p className="inline">{displayName}</p>
+              </Link>
+
+              <Tooltip title="Logout" className="hidden md:inline">
+                <button
+                  onClick={() => {
+                    signOut(auth)
+                      .then(() => {
+                        navigate("/");
+                      })
+                      .catch((error) => {
+                        // An error happened.
+                      });
+                  }}
+                  className="bg-red text-white px-4 py-2  ml-2 rounded"
+                >
+                  <FontAwesomeIcon icon={faArrowRightFromBracket} />
+                </button>
+              </Tooltip>
+            </div>
+            {/* <button className="md:hidden text-xl" onClick={handleMenuToggle}>
+              <FontAwesomeIcon icon={faBars} />
+            </button> */}
           </div>
         ) : (
           <div>

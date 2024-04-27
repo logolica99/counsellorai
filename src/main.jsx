@@ -10,6 +10,10 @@ import ApplicationPage from "./Pages/ApplicationPage.jsx";
 import ProtectedSite from "./Components/ProtectedSite.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import DashboardPage from "./Pages/DashboardPage.jsx";
+import { app } from "./firebase.config.js";
+import { UserContextProvider } from "./contexts/UserContext.jsx";
+import Loader from "./Components/Loader.jsx";
+import { Toaster } from "react-hot-toast";
 
 const router = createBrowserRouter([
   {
@@ -29,7 +33,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: (
       <ProtectedSite>
-      <DashboardPage/>
+        <DashboardPage />
       </ProtectedSite>
     ),
   },
@@ -53,8 +57,12 @@ const router = createBrowserRouter([
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <div className="font-raleway">
-      <RouterProvider router={router} />
-    </div>
+    <UserContextProvider>
+      <Loader />
+      <Toaster/>
+      <div className="font-raleway">
+        <RouterProvider router={router} />
+      </div>
+    </UserContextProvider>
   </React.StrictMode>
 );
