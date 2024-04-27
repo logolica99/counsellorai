@@ -3,9 +3,9 @@ import Nav from "./Nav";
 import { useNavigate } from "react-router-dom";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase.config";
+import { UserContextProvider } from "../contexts/UserContext";
 
 export default function ProtectedSite({ children }) {
-
   const navigate = useNavigate();
 
   onAuthStateChanged(auth, (user) => {
@@ -17,8 +17,10 @@ export default function ProtectedSite({ children }) {
 
   return (
     <div>
-      <Nav />
-      <div className="w-[90%] mx-auto">{children}</div>
+   
+        <Nav />
+        <div className="w-[90%] mx-auto">{children}</div>
+    
     </div>
   );
 }

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase.config";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   collection,
   doc,
@@ -18,7 +18,8 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+  const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
+
   const [aboutYourself, setAboutYourself] = useState({
     text: "",
     files: [],
@@ -26,33 +27,42 @@ export default function ProfilePage() {
   const [userData, setUserData] = useState({
     resumeLink: "",
     aboutYourself: {
-      text: "er",
+      text: "",
       files: [],
     },
     additionalFiles: [],
   });
 
   const getUserData = async () => {
-    const docRef = doc(db, "users", user.uid);
+
+    const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
     const userDataResponse = docSnap.data();
     console.log(userDataResponse);
+   
+
     setResumeLink(userDataResponse.resumeLink);
     if (userDataResponse.aboutYourself) {
       setAboutYourself(userDataResponse.aboutYourself);
     }
+    if (userDataResponse.additionalFilesLinks) {
+      setAdditionalFilesLinks(userDataResponse.additionalFilesLinks);
+    }
   };
 
   useEffect(() => {
-    if (user.uid) {
+    if (uid) {
       getUserData();
     }
-  }, [user.uid]);
+  }, [uid]);
 
   const [resumeLink, setResumeLink] = useState("");
   const [resumeFile, setResumeFile] = useState({});
+  const [aboutYourselfFiles, setAboutYourselfFiles] = useState([]);
 
   const [additionalFiles, setAdditionalFiles] = useState([]);
+  const [additionalFilesLinks, setAdditionalFilesLinks] = useState([]);
+  const uploadAboutYourselfRef = useRef();
 
   const submitData = () => {
     toast.promise(updateData(), {
@@ -61,23 +71,62 @@ export default function ProfilePage() {
       error: <b>Could not save.</b>,
     });
 
-    setDoc(doc(db, "users", user.uid), {
-      resumeLink: resumeLink,
-      aboutYourself: aboutYourself,
-    });
     getUserData();
   };
 
   const updateData = async () => {
     const storage = getStorage();
 
-    const resumeRef = ref(storage, `${user.uid}/${resumeFile.name}`);
-    await uploadBytes(resumeRef, resumeFile).then((snapshot) => {
-      console.log("Uploaded resume!");
-    });
-    await setDoc(doc(db, "users", user.uid), {
+    const resumeRef = ref(storage, `${uid}/${resumeFile.name}`);
+
+    if (resumeFile.name) {
+      await uploadBytes(resumeRef, resumeFile).then((snapshot) => {
+        console.log("Uploaded resume!");
+      });
+    }
+
+    await uploadAboutYourselfFiles();
+
+    await uploadAdditionalFiles();
+
+    await setDoc(doc(db, "users", uid), {
       resumeLink: resumeLink,
+      aboutYourself: aboutYourself,
+      additionalFilesLinks: additionalFilesLinks,
     });
+  };
+
+  const uploadAboutYourselfFiles = async () => {
+    const storage = getStorage();
+    if (aboutYourselfFiles.length > 0) {
+      let temp = Array.from(aboutYourselfFiles);
+      const uploadPromises = temp.map(async (file, index) => {
+        const fileRef = ref(storage, `${uid}/${file.name}`);
+
+        console.log(`file uploaded ${index}`);
+        return uploadBytes(fileRef, file);
+      });
+
+      // Wait for all uploads to finish (using Promise.all)
+      await Promise.all(uploadPromises);
+      console.log("All aboutyourself files uploaded successfully!");
+    }
+  };
+  const uploadAdditionalFiles = async () => {
+    const storage = getStorage();
+    if (additionalFiles.length > 0) {
+      let temp = Array.from(additionalFiles);
+      const uploadPromises = temp.map(async (file, index) => {
+        const fileRef = ref(storage, `${uid}/${file.name}`);
+
+        console.log(`file uploaded A${index}`);
+        return uploadBytes(fileRef, file);
+      });
+
+      // Wait for all uploads to finish (using Promise.all)
+      await Promise.all(uploadPromises);
+      console.log("All additional files uploaded successfully!");
+    }
   };
 
   return (
@@ -149,34 +198,72 @@ export default function ProfilePage() {
             <div className="flex justify-end mr-1">
               <FontAwesomeIcon
                 icon={faUpload}
-                className="text-darkBlue text-xl"
+                className="text-darkBlue text-xl cursor-pointer p-2 rounded-full hover:bg-gray/[.2]"
+                onClick={() => {
+                  uploadAboutYourselfRef.current.click();
+                }}
               />
             </div>
           </div>
           <div className="mt-4">
             <p className="text-gray text-sm font-bold ">Uploaded files</p>
-            <div className="flex mt-2 rounded justify-between items-center bg-lightCream px-4 py-1 border-b border-[#FFC422] ">
-              <p className="text-darkBlue font-bold">Essay.pdf</p>
-              <FontAwesomeIcon
-                icon={faClose}
-                className="text-darkBlue cursor-pointer p-1 hover:bg-gray/[.1] rounded-full"
-              />
-            </div>
+            <input
+              type="file"
+              multiple
+              className="hidden"
+              ref={uploadAboutYourselfRef}
+              onChange={(e) => {
+                setAboutYourselfFiles(e.target.files);
+
+                let temp = [];
+                Array.from(e.target.files).forEach((file) => {
+                  temp.push(file.name);
+                });
+
+                setAboutYourself({ ...aboutYourself, files: temp });
+              }}
+            />
+            {aboutYourself?.files?.map((file) => (
+              <div className="flex mt-2 rounded justify-between items-center bg-lightCream px-4 py-1 border-b border-[#FFC422] ">
+                <p className="text-darkBlue font-bold">{file}</p>
+                <FontAwesomeIcon
+                  icon={faClose}
+                  className="text-darkBlue cursor-pointer p-1 hover:bg-gray/[.1] rounded-full"
+                />
+              </div>
+            ))}
           </div>
         </div>
 
         <div className="mt-8">
           <p className="text-gray font-semibold">Additional Documents</p>
-          <input className="mt-4" type="file"></input>
+          <input
+            className="mt-4"
+            type="file"
+            multiple
+            onChange={(e) => {
+              setAdditionalFiles(e.target.files);
+
+              let temp = [];
+              Array.from(e.target.files).forEach((file) => {
+                temp.push(file.name);
+              });
+
+              setAdditionalFilesLinks(temp);
+            }}
+          />
           <div className="mt-4">
             <p className="text-gray text-sm font-bold ">Uploaded files</p>
-            <div className="flex mt-2 rounded justify-between items-center bg-lightCream px-4 py-1 border-b border-[#FFC422] ">
-              <p className="text-darkBlue font-bold">SOP.pdf</p>
-              <FontAwesomeIcon
-                icon={faClose}
-                className="text-darkBlue cursor-pointer p-1 hover:bg-gray/[.1] rounded-full"
-              />
-            </div>
+
+            {additionalFilesLinks?.map((file) => (
+              <div className="flex mt-2 rounded justify-between items-center bg-lightCream px-4 py-1 border-b border-[#FFC422] ">
+                <p className="text-darkBlue font-bold">{file}</p>
+                <FontAwesomeIcon
+                  icon={faClose}
+                  className="text-darkBlue cursor-pointer p-1 hover:bg-gray/[.1] rounded-full"
+                />
+              </div>
+            ))}
           </div>
         </div>
       </div>

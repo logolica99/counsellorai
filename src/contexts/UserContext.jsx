@@ -3,15 +3,15 @@ import React, { useState, createContext } from "react";
 export const UserContext = createContext();
 
 export const UserContextProvider = (props) => {
-  const [user, setUser] = useState({
-    isLoggedIn: false,
-    loading: false,
-    uid:"",
-    
-  });
+
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [uid, setUid] = useState("");
+
+ 
 
   return (
-    <UserContext.Provider value={[user, setUser]}>
+    <UserContext.Provider value={[isLoading, setIsLoading, uid, setUid]}>
       {props.children}
     </UserContext.Provider>
   );

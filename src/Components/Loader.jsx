@@ -10,11 +10,11 @@ import { BarLoader, SyncLoader } from "react-spinners";
 import { UserContext } from "../contexts/UserContext";
 
 export default function Loader() {
-  const [user, setUser] = useContext(UserContext);
+  const [loading] = useContext(UserContext);
   return (
     <div>
       <Dialog
-        open={user.loading}
+        open={loading}
         PaperProps={{
           style: {
             backgroundColor: "transparent",

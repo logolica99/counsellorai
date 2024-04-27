@@ -13,7 +13,7 @@ import { UserContext } from "../contexts/UserContext";
 export default function LoginPage() {
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
-  const [user, setUser] = useContext(UserContext);
+
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -50,7 +50,7 @@ export default function LoginPage() {
                   const token = credential?.accessToken;
                 })
                 .catch((error) => {
-                  setUser({ ...user, loading: false });
+             
 
                   console.log(error);
                 });

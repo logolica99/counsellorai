@@ -12,9 +12,9 @@ import { slide as Menu } from "react-burger-menu";
 import { UserContext } from "../contexts/UserContext";
 
 export default function Nav() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [user, setUser] = useContext(UserContext);
+  const [isLoading, setIsLoading ,uid, setUid] = useContext(UserContext);
   const [displayName, setDisplayName] = useState("");
   const [photoUrl, setPhotoUrl] = useState("");
 
@@ -23,8 +23,9 @@ export default function Nav() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setIsLoggedIn(true);
-
-      setUser((prev) => ({ ...prev, uid: user.uid }));
+      // setIsGamer({ hello: "yes" });
+      setUid(user.uid);
+      // setUser((prev) => ({ ...prev, uid: user.uid }));
       setDisplayName(user.displayName);
       setPhotoUrl(user.photoURL);
     } else {
