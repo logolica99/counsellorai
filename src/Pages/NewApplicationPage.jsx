@@ -34,7 +34,7 @@ export default function NewApplicationPage() {
   const updateData = async () => {
     await uploadQueryFiles();
     const docRef = await addDoc(collection(db, "applications", uid, uid), {
-      applicationData,
+      applicationData: { ...applicationData, createdAt: new Date().getTime() },
     });
 
     setApplicationId(docRef.id);

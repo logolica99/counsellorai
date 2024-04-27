@@ -34,12 +34,12 @@ export default function ProfilePage() {
   });
 
   const getUserData = async () => {
-
+    setIsLoading(true);
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
     const userDataResponse = docSnap.data();
     console.log(userDataResponse);
-   
+    setIsLoading(false);
 
     setResumeLink(userDataResponse.resumeLink);
     if (userDataResponse.aboutYourself) {
