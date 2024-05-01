@@ -4,7 +4,7 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase.config";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import * as PDFJS from "/public/pdfjs-dist/build/pdf.min.mjs";
+import * as PDFJS from "/js/pdfjs-dist/build/pdf.min.mjs?url";
 
 import {
   collection,
@@ -18,7 +18,6 @@ import { UserContext } from "../contexts/UserContext";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import FileConverter from "./FileConverter";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -70,7 +69,7 @@ export default function ProfilePage() {
 
   const uploadFileToGeminiandGetContext = async () => {
     const resumePdfImages = await pdfToImageConverter();
-
+    console.log(resumePDFImages);
     const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
     const genAI = new GoogleGenerativeAI(API_KEY);
     console.log("uploading");
@@ -182,8 +181,9 @@ export default function ProfilePage() {
   };
 
   const pdfToImageConverter = async () => {
+    console.log(PDFJS);
     PDFJS.GlobalWorkerOptions.workerSrc =
-      "./pdfjs-dist/build/pdf.worker.min.mjs";
+      "./js/pdfjs-dist/build/pdf.worker.min.mjs";
     const uri = URL.createObjectURL(resumeFile);
     var pdf = await PDFJS.getDocument({ url: uri }).promise;
 
