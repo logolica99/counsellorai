@@ -7,6 +7,7 @@ import { UserContext } from "../contexts/UserContext";
 import toast from "react-hot-toast";
 import { db } from "../firebase.config";
 import { useNavigate } from "react-router-dom";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export default function NewApplicationPage() {
   const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
@@ -23,6 +24,7 @@ export default function NewApplicationPage() {
 
   const [queryFiles, setQueryFiles] = useState([]);
 
+
   const submitData = () => {
     toast.promise(updateData(), {
       loading: "Uploading...",
@@ -30,11 +32,50 @@ export default function NewApplicationPage() {
       error: <b>Could not upload application!</b>,
     });
   };
+  const uploadFileToGeminiandGetContext = async () => {
+    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+    const genAI = new GoogleGenerativeAI(API_KEY);
+    console.log("uploading");
+    const queryParts = await Promise.all(
+      [...queryFiles].map(fileToGenerativePart)
+    );
+
+    console.log("uploading finished");
+
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+
+    const prompt =
+      "can you extract questions or the things that are required as texts from this images and return as an array of questions or requirements and nothing else, so that i can convert your string response to a json variable";
+    console.log("getting response...");
+
+    const result = await model.generateContent([prompt, ...queryParts]);
+    const response = await result.response;
+    const text = response.text();
+    const questionArray = JSON.parse(text);
+    console.log(questionArray);
+    return questionArray;
+  };
+
+  async function fileToGenerativePart(file) {
+    const base64EncodedDataPromise = new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result.split(",")[1]);
+      reader.readAsDataURL(file);
+    });
+    return {
+      inlineData: { data: await base64EncodedDataPromise, mimeType: file.type },
+    };
+  }
 
   const updateData = async () => {
     await uploadQueryFiles();
+    const questionArray = await uploadFileToGeminiandGetContext();
     const docRef = await addDoc(collection(db, "applications", uid, uid), {
-      applicationData: { ...applicationData, createdAt: new Date().getTime() },
+      applicationData: {
+        ...applicationData,
+        questions: questionArray,
+        createdAt: new Date().getTime(),
+      },
     });
 
     setApplicationId(docRef.id);
@@ -159,6 +200,7 @@ export default function NewApplicationPage() {
             ))}
           </div>
         </div>
+
         <div className="flex items-center gap-2 mt-2">
           <div className="h-[1px] bg-gray w-full"></div>
           <p className="text-gray text-center text-xl font-semibold">Or</p>

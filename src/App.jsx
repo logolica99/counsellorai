@@ -41,7 +41,7 @@ function App() {
             }
           />
           <Route
-            path="/application/:id"
+            path="/application/:applicationId"
             element={
               <ProtectedSite>
                 <ApplicationPage />
