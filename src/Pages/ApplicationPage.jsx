@@ -53,6 +53,7 @@ export default function ApplicationPage() {
     const result = await chat.sendMessage(prompt);
     const response = await result.response;
     let text = response.text();
+    console.log(text)
     text = text.slice(7);
     text = text.slice(0, text.length - 5);
     const responseJson = JSON.parse(text);
