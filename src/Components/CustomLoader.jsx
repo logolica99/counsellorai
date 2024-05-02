@@ -24,16 +24,18 @@ export default function CustomLoader({ isLoading }) {
         <Box
           sx={{
             display: "flex",
+            flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
             height: "100vh",
           }}
         >
-          <p className="text-white text-[24px] font-raleway mr-4">
+          <p className="text-white text-[24px] font-raleway mr-4 text-center">
             Summoning Gandalf to guide us back to your precious queries. You
             shall not pass... without answers!
           </p>
           <SyncLoader
+            className="mt-4"
             color={"#fff"}
             loading={true}
             size={10}
