@@ -148,7 +148,7 @@ export default function ApplicationPage() {
       const prompt = `Here's my resume information ${userData?.resumeText}. Here are  some personal information about me ${userData?.aboutYourself?.text}
       You have to check my answer for a university application question and give feedback and Points of improvement.  The question is ${question}, your previously suggested answer is ${answer}, My typed answer is ${myAnswer}
      
-      return as an array of objects having keys "question", "answer", "suggestiveAnswer" and "feedback" or requirements and nothing else, so that i can convert your string response to a json variable
+      return as an array of objects having keys "question", "answer", "suggestiveAnswer" and "feedback" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response
 
       here "question" is the one that I have provided you with, "answer" is your previously suggested answer, "suggestiveAnswer" is my typed answer and "feedback" is your provided feedback
       `;
@@ -156,8 +156,10 @@ export default function ApplicationPage() {
       const response = await result.response;
       let text = response.text();
       console.log(text);
-      text = text.slice(7);
-      text = text.slice(0, text.length - 5);
+      if (text.includes("json")) {
+        text = text.slice(7);
+        text = text.slice(0, text.length - 5);
+      }
       const responseJson = JSON.parse(text);
       console.log(responseJson);
 
@@ -240,7 +242,7 @@ export default function ApplicationPage() {
             <div className="p-4  bg-lightCream mt-2 rounded-lg">
               <p className="text-gray font-bold mb-2">Your draft answer:</p>
               <textarea
-                value={elem.suggestiveAnswer}
+                value={elem?.suggestiveAnswer}
                 onChange={(e) => {
                   setQuestionsAndAnswers((prevState) => {
                     const newItems = [...prevState];
