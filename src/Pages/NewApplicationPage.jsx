@@ -24,7 +24,6 @@ export default function NewApplicationPage() {
 
   const [queryFiles, setQueryFiles] = useState([]);
 
-
   const submitData = () => {
     toast.promise(updateData(), {
       loading: "Uploading...",
@@ -50,7 +49,12 @@ export default function NewApplicationPage() {
 
     const result = await model.generateContent([prompt, ...queryParts]);
     const response = await result.response;
-    const text = response.text();
+    let text = response.text();
+    
+    if (text.includes("json")) {
+      text = text.slice(7);
+      text = text.slice(0, text.length - 5);
+    }
     const questionArray = JSON.parse(text);
     console.log(questionArray);
     return questionArray;

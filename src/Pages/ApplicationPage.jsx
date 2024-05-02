@@ -69,6 +69,7 @@ export default function ApplicationPage() {
       setShowErrMessage(false);
       await saveAIResponse(responseJson);
     } catch (err) {
+      console.log(err)
       setIsLoading(false);
       setShowErrMessage(true);
     }
@@ -97,17 +98,20 @@ export default function ApplicationPage() {
   };
 
   const saveAIResponse = async (responseJson) => {
-    console.log("saving AI response");
-    const docRef = await setDoc(
-      doc(db, "applications", uid, uid, applicationId),
-      {
-        applicationData: {
-          ...applicationData,
-          questionsAndAnswers: responseJson,
-        },
-      }
-    );
-    console.log("AI response saved");
+    if (applicationData.questions) {
+      console.log("saving AI response");
+
+      const docRef = await setDoc(
+        doc(db, "applications", uid, uid, applicationId),
+        {
+          applicationData: {
+            ...applicationData,
+            questionsAndAnswers: responseJson,
+          },
+        }
+      );
+      console.log("AI response saved");
+    }
   };
 
   const getFullData = async () => {
@@ -128,7 +132,11 @@ export default function ApplicationPage() {
       !applicationData.questionsAndAnswers
     ) {
       getAIInput();
-    } else if (searchParams.get("generate") == "true") {
+    } else if (
+      userData.aboutYourself &&
+      applicationData.queries &&
+      searchParams.get("generate") == "true"
+    ) {
       getAIInput();
     }
   }, [userData, applicationData, searchParams]);

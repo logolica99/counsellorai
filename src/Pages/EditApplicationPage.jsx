@@ -41,7 +41,7 @@ export default function EditApplicationPage() {
       const storage = getStorage();
 
       setQueryCloudLinks([]);
-      console.log();
+
       applicationResonse.applicationData.queryPictures.map(async (picture) => {
         const fileRef = ref(storage, `${uid}/${picture}`);
         let fileLink = await getDownloadURL(fileRef);
@@ -81,7 +81,13 @@ export default function EditApplicationPage() {
 
     const result = await model.generateContent([prompt, ...queryParts]);
     const response = await result.response;
-    const text = response.text();
+    let text = response.text();
+    console.log(text);
+    if (text.includes("json")) {
+      text = text.slice(7);
+      text = text.slice(0, text.length - 5);
+    }
+
     const questionArray = JSON.parse(text);
     console.log(questionArray);
     return questionArray;
@@ -102,6 +108,7 @@ export default function EditApplicationPage() {
     if (queryFiles.length > 0) {
       await uploadQueryFiles();
       const questionArray = await uploadFileToGeminiandGetContext();
+      console.log(applicationData.queryPictures)
       const docRef = await setDoc(
         doc(db, "applications", uid, uid, applicationId),
         {
