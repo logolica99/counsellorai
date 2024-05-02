@@ -290,11 +290,21 @@ export default function EditApplicationPage() {
             }));
           }}
           placeholder="Type the questions you see in your portal separted by commas"
-          className="w-full outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
+          className="w-full outline-none text-[#3D3929] bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
+
+
+<div className="flex justify-end">
+          <button
+            onClick={submitData}
+            className="bg-darkBlue mt-8 text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
+          >
+            Submit
+          </button>
+        </div>
       </div>
 
-      <div className="mt-8 fixed w-full left-0 bottom-0 border-t border-[#FFC422] bg-lightCream py-4 px-4 ">
+      {/* <div className="mt-8 fixed w-full left-0 bottom-0 border-t border-[#FFC422] bg-lightCream py-4 px-4 ">
         <div className="flex justify-end">
           <button
             onClick={submitData}
@@ -303,7 +313,7 @@ export default function EditApplicationPage() {
             Submit
           </button>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

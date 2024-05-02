@@ -220,7 +220,7 @@ export default function ProfilePage() {
   return (
     <div className="mb-32">
       <button
-        className="bg-red px-4 py-1 rounded text-white font-bold"
+        className="bg-red px-4 py-1 rounded text-white font-bold md:hidden"
         onClick={() => {
           signOut(auth)
             .then(() => {
@@ -282,7 +282,7 @@ export default function ProfilePage() {
                 setAboutYourself({ ...aboutYourself, text: e.target.value });
               }}
               placeholder="Type, upload a file or feel free to speak about yourself here "
-              className="w-full outline-none bg-lightCream rounded  min-h-[40vh] resize-none "
+              className="w-full  outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929]"
             ></textarea>
             {/* <div className="flex justify-end mr-1">
               <FontAwesomeIcon
@@ -355,18 +355,29 @@ export default function ProfilePage() {
             ))}
           </div>
         </div> */}
-      </div>
-
-      <div className="mt-8 fixed w-full left-0 bottom-0 border-t border-[#FFC422] bg-lightCream py-4 px-4 ">
-        <div className="flex justify-end">
+         <div className="flex justify-end mt-8">
           <button
             onClick={submitData}
-            className="bg-darkBlue focus:ring text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
+            className="bg-darkBlue text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
           >
             Submit
           </button>
         </div>
       </div>
+
+      {/* <div className="mt-8 fixed w-full left-0 bottom-0 border-t  bg-darkBlue py-2  ">
+        <div className="flex justify-center">
+
+        <div className="flex justify-end">
+          <button
+            onClick={submitData}
+            className="bg-red text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
+          >
+            Submit
+          </button>
+        </div>
+        </div>
+      </div> */}
     </div>
   );
 }

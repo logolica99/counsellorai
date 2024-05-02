@@ -12,7 +12,7 @@ import EditApplicationPage from "./Pages/EditApplicationPage.jsx";
 
 function App() {
   return (
-    <div className="font-raleway">
+    <div className="font-raleway bg-[#FFFBF0]">
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Homepage />} />

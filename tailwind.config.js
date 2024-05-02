@@ -10,8 +10,12 @@ export default {
         red: "#F03A47",
         darkBlue: "#003D61",
         cream: "#DFCD9B",
-        lightCream:"#FFF0C7",
-        gray:"#5A5959"
+        lightCream: "#FFF0C7",
+        gray: "#5A5959",
+      },
+
+      screens: {
+   
       },
     },
   },

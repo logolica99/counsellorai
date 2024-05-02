@@ -41,12 +41,12 @@ export default function Nav() {
 
   return (
     <div>
-      <div className="flex mt-8 mb-6 w-[90%] mx-auto items-center justify-between ">
+      <div className="flex pt-8 mb-6 w-[90%] md:w-[80%] mx-auto items-center justify-between ">
         <Link
           to="/"
-          className="bg-red text-white font-semibold px-4 md:px-8 py-1 rounded-lg text-sm md:text-xl"
+          // className="bg-red text-white font-semibold px-4 md:px-8 py-1 rounded-lg text-sm md:text-xl"
         >
-          Counsellorai
+          <img src="/Counselor ai logo.png" alt="" className="w-[130px] md:w-[200px]"/>
         </Link>
 
         {isLoggedIn ? (
@@ -65,10 +65,10 @@ export default function Nav() {
               >
                 <img
                   src={photoUrl}
-                  className=" w-6 h-6 rounded-full hidden md:block"
+                  className=" w-6 h-6 rounded-full "
                   alt=""
                 />
-                <p className="inline">{displayName}</p>
+                <p className="hidden md:inline">{displayName}</p>
               </Link>
 
               <Tooltip title="Logout" className="hidden md:inline">

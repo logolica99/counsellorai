@@ -20,7 +20,7 @@ export default function ProtectedSite({ children }) {
   return (
     <div>
       <Nav />
-      <div className="w-[90%] md:w-[85%] lg:w-[70%] mx-auto">{children}</div>
+      <div className="w-[90%] md:w-[85%] lg:w-[50%] mx-auto">{children}</div>
     </div>
   );
 }

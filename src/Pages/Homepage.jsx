@@ -3,6 +3,7 @@ import Nav from "../Components/Nav";
 import { Link } from "react-router-dom";
 
 
+
 export default function Homepage() {
   return (
     <div className="">
@@ -24,6 +25,8 @@ export default function Homepage() {
             Get Started
           </Link>
         </div>
+
+      
       </div>
     </div>
   );
