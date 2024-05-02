@@ -243,7 +243,7 @@ export default function ApplicationPage() {
               <p className="text-gray font-semibold">{elem.question}</p>
             </div>
             <div className="bg-[#EFFFDA] border-[#D2D2D2] mt-4 p-6 rounded">
-              <p className="text-gray font-bold">Some hints for you:</p>
+              <p className="text-gray font-bold">Some recommendations for you:</p>
               <p className="mt-2 leading-7 text-lg text-green-900">
                 <Markdown>{elem.answer}</Markdown>
               </p>
