@@ -150,25 +150,23 @@ export default function ApplicationPage() {
       const prompt = `Here's my resume information ${userData?.resumeText}. Here are  some personal information about me ${userData?.aboutYourself?.text}
       You have to check my answer for a university application question and give feedback as how can i improve my answer.  The question is ${question}, your previously suggested answer is ${answer}, My typed answer is ${myAnswer}
      
-      return as an array of objects having keys "question", "answer", "suggestiveAnswer" and "feedback" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response and don't provide \`\`\`json infront of your answer. i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. no heading, no asterisk or no special  characters just pure normal text in  object  values.
-
-      here "question" is the one that I have provided you with, "answer" is your previously suggested answer, "suggestiveAnswer" is my typed answer and "feedback" is your provided feedback
+      just return me the feedback.
       `;
       const result = await chat.sendMessage(prompt);
       const response = await result.response;
       let text = response.text();
       console.log(text);
-      if (text.includes("json")) {
-        text = text.slice(7);
-        text = text.slice(0, text.length - 5);
-      }
-      const responseJson = JSON.parse(text);
-      console.log(responseJson);
+      // if (text.includes("json")) {
+      //   text = text.slice(7);
+      //   text = text.slice(0, text.length - 5);
+      // }
+      // const responseJson = JSON.parse(text);
+      // console.log(responseJson);
 
       // console.log(responseJson);
       // setQuestionsAndAnswers(responseJson);
       setIsCustomLoading(false);
-      return responseJson;
+      return text;
       // await saveAIResponse(responseJson);
     } catch (err) {
       console.log(err);
@@ -262,17 +260,15 @@ export default function ApplicationPage() {
                 <button
                   className="bg-darkBlue text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
                   onClick={async () => {
-                    const response = await generateSuggestions(
+                    const feedbackResponse = await generateSuggestions(
                       elem.question,
                       elem.answer,
                       elem.suggestiveAnswer
                     );
-                    if (response) {
+                    if (feedbackResponse) {
                       setQuestionsAndAnswers((prevState) => {
                         const newItems = [...prevState];
-                        newItems[index] = {
-                          ...response[0],
-                        };
+                        newItems[index] = {...newItems[index],feedback:feedbackResponse};
                         return newItems;
                       });
                     }
