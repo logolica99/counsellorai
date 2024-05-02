@@ -9,12 +9,11 @@ import {
 import { BarLoader, SyncLoader } from "react-spinners";
 import { UserContext } from "../contexts/UserContext";
 
-export default function Loader() {
-  const [loading] = useContext(UserContext);
+export default function CustomLoader({ isLoading }) {
   return (
     <div>
       <Dialog
-        open={loading}
+        open={isLoading}
         PaperProps={{
           style: {
             backgroundColor: "transparent",
@@ -30,11 +29,14 @@ export default function Loader() {
             height: "100vh",
           }}
         >
-        
+          <p className="text-white text-[24px] font-raleway mr-4">
+            Summoning Gandalf to guide us back to your precious queries. You
+            shall not pass... without answers!
+          </p>
           <SyncLoader
             color={"#fff"}
             loading={true}
-            size={20}
+            size={10}
             aria-label="Loading Spinner"
             data-testid="loader"
           />

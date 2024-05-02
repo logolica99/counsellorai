@@ -295,7 +295,7 @@ export default function ProfilePage() {
                 setAboutYourself({ ...aboutYourself, text: e.target.value });
               }}
               placeholder="Type feel free to speak about yourself here "
-              className="w-full  outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929]"
+              className=" w-full  outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929] leading-6 md:leading-8"
             ></textarea>
             <div className="flex justify-end mr-1">
               {/* <FontAwesomeIcon

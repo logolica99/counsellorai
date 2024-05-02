@@ -14,7 +14,6 @@ export default function LoginPage() {
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
 
-
   onAuthStateChanged(auth, (user) => {
     if (user) {
       if (typeof window !== "undefined") {
@@ -28,30 +27,29 @@ export default function LoginPage() {
 
   return (
     <div>
-      <main className="relative flex min-h-screen flex-col items-center gap-8  pt-40 md:pt-52">
+      <main className="relative flex min-h-screen flex-col items-center gap-6  pt-40 md:pt-52">
         <Link
           to="/"
-          className="bg-red text-white font-semibold px-4 md:px-8 py-1 rounded-lg text-sm md:text-xl"
+          // className="bg-red text-white font-semibold px-4 md:px-8 py-1 rounded-lg text-sm md:text-xl"
         >
-          Counsellorai
+          <img
+            src="/Counselor ai logo.png"
+            alt=""
+            className="w-[130px] md:w-[200px]"
+          />
         </Link>
         <div className="rounded-lg border border-cream bg-lightCream p-6 text-center text-darkBlue shadow">
           <p>Sign in with</p>
           <div
             className="my-6 flex flex-1 cursor-pointer items-center justify-center gap-3 rounded-md border border-cream py-3 transition duration-150 ease-in-out hover:bg-zinc-200/20"
             onClick={() => {
-         
               signInWithPopup(auth, provider)
                 .then((result) => {
-        
-
                   const credential =
                     GoogleAuthProvider.credentialFromResult(result);
                   const token = credential?.accessToken;
                 })
                 .catch((error) => {
-             
-
                   console.log(error);
                 });
             }}

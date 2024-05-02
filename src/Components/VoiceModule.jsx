@@ -87,12 +87,17 @@ export default function VoiceModule({
                         />
                       </button>
                     </div>
+                    {listening && (
+                      <p className="text-gray text-center text-sm">
+                        Click the mic to stop transcripting.
+                      </p>
+                    )}
                     <div>
                       <div className="w-full  bg-lightCream  rounded mt-4 border px-4 py-4  border-[#D2D2D2]">
                         <textarea
                           value={transcript}
                           placeholder="Audio Transcript "
-                          className="w-full font-raleway outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929]"
+                          className="leading-6 md:leading-8 w-full font-raleway outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929]"
                         ></textarea>
                       </div>
                     </div>
@@ -104,6 +109,8 @@ export default function VoiceModule({
                       <button
                         onClick={() => {
                           setOpenVoiceModule(false);
+                          resetTranscript();
+                          SpeechRecognition.stopListening();
                         }}
                         className="bg-gray  text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
                       >
@@ -113,9 +120,11 @@ export default function VoiceModule({
                         onClick={() => {
                           setAboutYourself({
                             ...aboutYourself,
-                            text: aboutYourself.text + transcript,
+                            text: aboutYourself.text + "\n" + transcript,
                           });
-                          setOpenVoiceModule(false)
+                          setOpenVoiceModule(false);
+                          resetTranscript();
+                          SpeechRecognition.stopListening();
                         }}
                         className="bg-darkBlue  text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
                       >

@@ -12,9 +12,11 @@ import { UserContext } from "../contexts/UserContext";
 import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import CustomLoader from "../Components/CustomLoader";
 
 export default function ApplicationPage() {
   const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
+  const [isCustomLoading, setIsCustomLoading] = useState(false);
   let { applicationId } = useParams();
   const [userData, setUserData] = useState([]);
   const [applicationData, setApplicationData] = useState([]);
@@ -24,7 +26,7 @@ export default function ApplicationPage() {
   let [searchParams, setSearchParams] = useSearchParams();
 
   const getAIInput = async () => {
-    setIsLoading(true);
+    setIsCustomLoading(true);
 
     try {
       const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
@@ -65,12 +67,12 @@ export default function ApplicationPage() {
       console.log(responseJson);
       // console.log(responseJson);
       setQuestionsAndAnswers(responseJson);
-      setIsLoading(false);
+      setIsCustomLoading(false);
       setShowErrMessage(false);
       await saveAIResponse(responseJson);
     } catch (err) {
-      console.log(err)
-      setIsLoading(false);
+      console.log(err);
+      setIsCustomLoading(false);
       setShowErrMessage(true);
     }
   };
@@ -115,10 +117,10 @@ export default function ApplicationPage() {
   };
 
   const getFullData = async () => {
-    setIsLoading(true);
+    setIsCustomLoading(true);
     await getUserData();
     await getApplicationData();
-    setIsLoading(false);
+    setIsCustomLoading(false);
   };
 
   useEffect(() => {
@@ -128,13 +130,13 @@ export default function ApplicationPage() {
   useEffect(() => {
     if (
       userData.aboutYourself &&
-      applicationData.queries &&
+      applicationData.uniName &&
       !applicationData.questionsAndAnswers
     ) {
       getAIInput();
     } else if (
       userData.aboutYourself &&
-      applicationData.queries &&
+      applicationData.uniName &&
       searchParams.get("generate") == "true"
     ) {
       getAIInput();
@@ -143,6 +145,7 @@ export default function ApplicationPage() {
 
   return (
     <div className="mt-16">
+      <CustomLoader isLoading={isCustomLoading}/>
       <div className="flex gap-8">
         <Link
           to="/dashboard"

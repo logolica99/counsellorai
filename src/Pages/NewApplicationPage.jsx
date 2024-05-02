@@ -223,7 +223,7 @@ export default function NewApplicationPage() {
             }));
           }}
           placeholder="Type the questions you see in your portal separted by commas"
-          className="w-full text-[#3D3929] outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
+          className="leading-6 md:leading-8 w-full text-[#3D3929] outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
 
         <div className="flex justify-end mt-8">
