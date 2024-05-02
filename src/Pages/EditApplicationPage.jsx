@@ -108,7 +108,7 @@ export default function EditApplicationPage() {
     if (queryFiles.length > 0) {
       await uploadQueryFiles();
       const questionArray = await uploadFileToGeminiandGetContext();
-      console.log(applicationData.queryPictures)
+      console.log(applicationData.queryPictures);
       const docRef = await setDoc(
         doc(db, "applications", uid, uid, applicationId),
         {
@@ -279,7 +279,7 @@ export default function EditApplicationPage() {
         </div>
 
         <p className=" text-gray mt-4 text-base font-semibold">
-          Write the queries in text
+          Text input separted by commas
         </p>
         <textarea
           value={applicationData.queries}
@@ -289,7 +289,7 @@ export default function EditApplicationPage() {
               queries: e.target.value,
             }));
           }}
-          placeholder="Write about your university queries "
+          placeholder="Type the questions you see in your portal separted by commas"
           className="w-full outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
       </div>

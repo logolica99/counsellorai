@@ -50,7 +50,7 @@ export default function NewApplicationPage() {
     const result = await model.generateContent([prompt, ...queryParts]);
     const response = await result.response;
     let text = response.text();
-    
+
     if (text.includes("json")) {
       text = text.slice(7);
       text = text.slice(0, text.length - 5);
@@ -206,13 +206,13 @@ export default function NewApplicationPage() {
         </div>
 
         <div className="flex items-center gap-2 mt-2">
-          <div className="h-[1px] bg-gray w-full"></div>
+          <div className="h-[1px] bg-red w-full"></div>
           <p className="text-gray text-center text-xl font-semibold">Or</p>
-          <div className="h-[1px] bg-gray w-full"></div>
+          <div className="h-[1px] bg-red w-full"></div>
         </div>
 
         <p className=" text-gray mt-4 text-base font-semibold">
-          Write the queries in text
+          Text input separted by commas
         </p>
         <textarea
           value={applicationData.queries}
@@ -222,7 +222,8 @@ export default function NewApplicationPage() {
               queries: e.target.value,
             }));
           }}
-          placeholder="Write about your university queries "
+          placeholder="Type the questions you see in your portal separted by commas"
+
           className="w-full outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
       </div>
