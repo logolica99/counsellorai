@@ -108,9 +108,9 @@ export default function VoiceModule({
                       </button> */}
                       <button
                         onClick={() => {
+                          SpeechRecognition.stopListening();
                           setOpenVoiceModule(false);
                           resetTranscript();
-                          SpeechRecognition.stopListening();
                         }}
                         className="bg-gray  text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
                       >
@@ -122,9 +122,9 @@ export default function VoiceModule({
                             ...aboutYourself,
                             text: aboutYourself.text + "\n" + transcript,
                           });
+                          SpeechRecognition.stopListening();
                           setOpenVoiceModule(false);
                           resetTranscript();
-                          SpeechRecognition.stopListening();
                         }}
                         className="bg-darkBlue  text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
                       >
