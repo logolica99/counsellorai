@@ -268,13 +268,16 @@ export default function ApplicationPage() {
                     if (feedbackResponse) {
                       setQuestionsAndAnswers((prevState) => {
                         const newItems = [...prevState];
-                        newItems[index] = {...newItems[index],feedback:feedbackResponse};
+                        newItems[index] = {
+                          ...newItems[index],
+                          feedback: feedbackResponse,
+                        };
                         return newItems;
                       });
                     }
                   }}
                 >
-                  Submit
+                  View feedback
                 </button>
               </div>
             </div>
