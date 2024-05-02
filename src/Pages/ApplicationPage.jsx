@@ -223,6 +223,10 @@ export default function ApplicationPage() {
         <p className="text-center font-bold text-2xl text-darkBlue">
           {applicationData.uniName}
         </p>
+        <div className="text-center mt-2">
+          <p className="text-gray font-semibold">{applicationData.programName}</p>
+          <p className="text-gray font-semibold">{applicationData.session}</p>
+        </div>
       </div>
       {showErrMessage && (
         <div>

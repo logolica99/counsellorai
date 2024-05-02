@@ -227,7 +227,7 @@ export default function ProfilePage() {
   return (
     <div className="pb-32">
       <VoiceModule
-      setAboutYourself={setAboutYourself}
+        setAboutYourself={setAboutYourself}
         openVoiceModule={openVoiceModule}
         setOpenVoiceModule={setOpenVoiceModule}
         aboutYourself={aboutYourself}
@@ -252,7 +252,8 @@ export default function ProfilePage() {
       <div className="mt-8">
         <div>
           <p className="text-gray font-semibold">
-            Upload you resume / academic CV PDF
+            Upload the pdf version of any of these documents -
+            resume/CV/personal statement/about yourself essay
           </p>
 
           <input
@@ -285,8 +286,8 @@ export default function ProfilePage() {
 
         <div className="mt-8">
           <p className="text-gray font-semibold">
-            Tell us about yourself - anything that you wish to include in your
-            college application - be as detailed as possible.
+            Tell us about yourself. This could be anything that you wish to
+            include in your college application. Be as detailed as possible!
           </p>
           <div className="w-full  bg-lightCream  rounded mt-4 border px-4 py-4  border-[#D2D2D2]">
             <textarea
@@ -294,7 +295,7 @@ export default function ProfilePage() {
               onChange={(e) => {
                 setAboutYourself({ ...aboutYourself, text: e.target.value });
               }}
-              placeholder="Type feel free to speak about yourself here "
+              placeholder="Feel free to type or speak about yourself here "
               className=" w-full  outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929] leading-6 md:leading-8"
             ></textarea>
             <div className="flex justify-end mr-1">

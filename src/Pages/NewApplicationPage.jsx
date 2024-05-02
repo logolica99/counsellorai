@@ -158,9 +158,12 @@ export default function NewApplicationPage() {
       </div>
 
       <div className="mt-8">
-        <p className="text-gray font-semibold text-xl">Admission Queries</p>
+        <p className="text-gray font-semibold text-xl">
+          Admission Portal Questions
+        </p>
         <p className=" text-gray mt-4 text-base font-semibold">
-          Upload Screenshots
+          Upload clear screenshots of the questions in your university admission
+          portal
         </p>
         <input
           className="mt-2"
@@ -212,7 +215,7 @@ export default function NewApplicationPage() {
         </div>
 
         <p className=" text-gray mt-4 text-base font-semibold">
-          Text input separted by commas
+          Type the questions you see in your portal separted by commas
         </p>
         <textarea
           value={applicationData.queries}
@@ -222,7 +225,7 @@ export default function NewApplicationPage() {
               queries: e.target.value,
             }));
           }}
-          placeholder="Type the questions you see in your portal separted by commas"
+          placeholder="Use commas to separate your questions: Question 1, Question 2, Question..."
           className="leading-6 md:leading-8 w-full text-[#3D3929] outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
 
