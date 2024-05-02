@@ -57,7 +57,8 @@ export default function ApplicationPage() {
         applicationData?.queries
       }.
      
-      return as an array of objects having keys "question" and "answer" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response . i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. just pure answer.
+      return as an array of objects having keys "question" and "answer" as requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response . 
+. Return answer in markdown. .Make the  headings bold and italic using markdown.
      in the "answer" you should include your suggestions.
       `;
       const result = await chat.sendMessage(prompt);
@@ -150,8 +151,8 @@ export default function ApplicationPage() {
       const resumePrompt = `Here's my resume information ${userData?.resumeText}.`;
 
       const prompt = `Here's my resume information ${userData?.resumeText}. Here are  some personal information about me ${userData?.aboutYourself?.text}
-      You have to check my answer for a university application question and give feedback as how can i improve my answer.  The question is ${question}, your previously suggested answer is ${answer}, My typed answer is ${myAnswer}
-     
+      You have to check my answer for a university application question and give feedback as how can i improve my answer in markdown. Make the keypoint headings italic and bold  using markdown..  The question is ${question}, your previously suggested answer is ${answer}, My typed answer is ${myAnswer}
+      .
       just return me the feedback.
       `;
       const result = await chat.sendMessage(prompt);
@@ -232,18 +233,18 @@ export default function ApplicationPage() {
       )}
       <div>
         {questionsAndAnswers.map((elem, index) => (
-          <div className="my-8 border rounded-lg p-3 border-gray/[.2]">
+          <div className="my-8 border rounded-lg p-3 border-gray/[.2] font-inter">
             <div className="flex flex-col md:flex-row gap-1 md:gap-4 md:items-center">
               <p className="text-xl text-green-700 font-semibold">Question:</p>
               <p className="text-gray font-semibold">{elem.question}</p>
             </div>
-            <div className="bg-[#EFFFDA] border-[#D2D2D2] mt-4 p-4 rounded">
+            <div className="bg-[#EFFFDA] border-[#D2D2D2] mt-4 p-6 rounded">
               <p className="text-gray font-bold">Some hints for you:</p>
-              <p className="mt-2 ">
+              <p className="mt-2 leading-7 text-lg text-green-900">
                 <Markdown>{elem.answer}</Markdown>
               </p>
             </div>
-            <div className="p-4  bg-lightCream mt-2 rounded-lg">
+            <div className="p-6  bg-lightCream mt-2 rounded-lg">
               <p className="text-gray font-bold mb-2">Your draft answer:</p>
               <textarea
                 value={elem?.suggestiveAnswer}
@@ -286,9 +287,9 @@ export default function ApplicationPage() {
               </div>
             </div>
             {elem.feedback && (
-              <div className="bg-[#FFE7DA] border-[#D2D2D2] mt-4 p-4 rounded">
+              <div className="bg-[#DAEBF2] border-[#D2D2D2] mt-4 p-6 rounded">
                 <p className="text-gray font-bold">Points of improvement:</p>
-                <p className="mt-2 ">
+                <p className="mt-2 leading-7 text-lg text-[#0B6683]">
                   <Markdown>{elem.feedback}</Markdown>
                 </p>
               </div>

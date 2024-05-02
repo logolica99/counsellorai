@@ -4,6 +4,7 @@ export default {
   theme: {
     fontFamily: {
       raleway: ["Raleway", "Serif"],
+      inter: ["Inter", "Serif"],
     },
     extend: {
       colors: {
@@ -14,9 +15,7 @@ export default {
         gray: "#5A5959",
       },
 
-      screens: {
-   
-      },
+      screens: {},
     },
   },
 
