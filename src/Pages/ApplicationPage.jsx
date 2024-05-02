@@ -198,7 +198,7 @@ export default function ApplicationPage() {
   return (
     <div className="mt-16">
       <CustomLoader isLoading={isCustomLoading} />
-      <div className="flex gap-8">
+      <div className="flex justify-between gap-8 flex-wrap">
         <Link
           to="/dashboard"
           className="flex gap-4 items-center  bg-lightCream border border-cream px-4 py-1 rounded "
