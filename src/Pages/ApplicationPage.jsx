@@ -9,7 +9,7 @@ import {
   faLeftLong,
 } from "@fortawesome/free-solid-svg-icons";
 import { UserContext } from "../contexts/UserContext";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
@@ -65,6 +65,7 @@ export default function ApplicationPage() {
       setQuestionsAndAnswers(responseJson);
       setIsLoading(false);
       setShowErrMessage(false);
+      await saveAIResponse(responseJson);
     } catch (err) {
       setIsLoading(false);
       setShowErrMessage(true);
@@ -84,7 +85,27 @@ export default function ApplicationPage() {
     const docSnap = await getDoc(docRef);
     const applicationResonse = docSnap.data();
     setApplicationData(applicationResonse.applicationData);
+
+    if (applicationResonse.applicationData.questionsAndAnswers) {
+      setQuestionsAndAnswers(
+        applicationResonse.applicationData.questionsAndAnswers
+      );
+    }
     console.log("applicationData loaded");
+  };
+
+  const saveAIResponse = async (responseJson) => {
+    console.log("saving AI response");
+    const docRef = await setDoc(
+      doc(db, "applications", uid, uid, applicationId),
+      {
+        applicationData: {
+          ...applicationData,
+          questionsAndAnswers: responseJson,
+        },
+      }
+    );
+    console.log("AI response saved");
   };
 
   const getFullData = async () => {
@@ -99,7 +120,11 @@ export default function ApplicationPage() {
     getFullData();
   }, [applicationId, uid]);
   useEffect(() => {
-    if (userData.aboutYourself && applicationData.queries) {
+    if (
+      userData.aboutYourself &&
+      applicationData.queries &&
+      !applicationData.questionsAndAnswers
+    ) {
       getAIInput();
     }
   }, [userData, applicationData]);
