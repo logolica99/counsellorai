@@ -14,6 +14,7 @@ export default function CustomLoader({ isLoading }) {
     <div>
       <Dialog
         open={isLoading}
+        BackdropProps={{ style: { backgroundColor: "rgba(0, 0, 0, 0.9)" } }}
         PaperProps={{
           style: {
             backgroundColor: "transparent",
