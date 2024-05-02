@@ -13,6 +13,7 @@ import { collection, doc, getDoc, getDocs, setDoc } from "firebase/firestore";
 import { db } from "../firebase.config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import CustomLoader from "../Components/CustomLoader";
+import toast from "react-hot-toast";
 
 export default function ApplicationPage() {
   const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
@@ -168,6 +169,7 @@ export default function ApplicationPage() {
     } catch (err) {
       console.log(err);
       setIsCustomLoading(false);
+      toast.error("Error generating answer! Please Submit again!");
     }
   };
 
