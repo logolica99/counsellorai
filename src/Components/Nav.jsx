@@ -43,7 +43,7 @@ export default function Nav() {
     <div>
       <div className="z-20 flex pt-8 mb-6 w-[90%] md:w-[80%] mx-auto items-center justify-between ">
         <Link
-        className="z-20"
+          className="z-20"
           to="/"
           // className="bg-red text-white font-semibold px-4 md:px-8 py-1 rounded-lg text-sm md:text-xl"
         >
@@ -94,16 +94,16 @@ export default function Nav() {
             </button> */}
           </div>
         ) : (
-          <div>
+          <div className="z-20">
             <Link
               to="/login"
-              className="text-darkBlue font-bold px-4 md:px-8 py-2 md:py-3 hover:opacity-70 ease-in-out text-sm md:text-base rounded-lg"
+              className="z-30 text-darkBlue font-bold px-4 md:px-8 py-2 md:py-3 hover:opacity-70 ease-in-out text-sm md:text-base rounded-lg"
             >
               LOGIN
             </Link>
             <Link
               to="/login"
-              className="text-darkBlue bg-cream font-bold px-4 md:px-8 py-2 md:py-3  hover:opacity-70 ease-in-out text-sm md:text-base rounded-lg"
+              className="z-30 text-darkBlue bg-cream font-bold px-4 md:px-8 py-2 md:py-3  hover:opacity-70 ease-in-out text-sm md:text-base rounded-lg"
             >
               SIGN UP
             </Link>
