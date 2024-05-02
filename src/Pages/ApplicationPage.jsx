@@ -150,7 +150,7 @@ export default function ApplicationPage() {
       const prompt = `Here's my resume information ${userData?.resumeText}. Here are  some personal information about me ${userData?.aboutYourself?.text}
       You have to check my answer for a university application question and give feedback and Points of improvement.  The question is ${question}, your previously suggested answer is ${answer}, My typed answer is ${myAnswer}
      
-      return as an array of objects having keys "question", "answer", "suggestiveAnswer" and "feedback" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response and don't provide \`\`\`json infront of your answer. i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. just pure normal text in key object key values.
+      return as an array of objects having keys "question", "answer", "suggestiveAnswer" and "feedback" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response and don't provide \`\`\`json infront of your answer. i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. no asterisk or no special weird characters just pure normal text in  object  values.
 
       here "question" is the one that I have provided you with, "answer" is your previously suggested answer, "suggestiveAnswer" is my typed answer and "feedback" is your provided feedback
       `;
