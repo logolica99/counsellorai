@@ -14,6 +14,7 @@ import { db } from "../firebase.config";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import CustomLoader from "../Components/CustomLoader";
 import toast from "react-hot-toast";
+import Markdown from "react-markdown";
 
 export default function ApplicationPage() {
   const [isLoading, setIsLoading, uid, setUid] = useContext(UserContext);
@@ -52,7 +53,7 @@ export default function ApplicationPage() {
       }. Here are  some personal information about me ${
         userData?.aboutYourself?.text
       }
-      You have to provide suggestions for  these questions and provide bullet points about what should i include  about me for a university applications and don't answer anything directly, ${applicationData?.questions?.join()} , ${
+      You have to provide suggestions for  these questions and provide bullet points about what should i include  about me based on my CV and my personal information for a university applications and don't answer anything directly, ${applicationData?.questions?.join()} , ${
         applicationData?.queries
       }.
      
@@ -238,7 +239,9 @@ export default function ApplicationPage() {
             </div>
             <div className="bg-[#EFFFDA] border-[#D2D2D2] mt-4 p-4 rounded">
               <p className="text-gray font-bold">Some hints for you:</p>
-              <p className="mt-2 ">{elem.answer}</p>
+              <p className="mt-2 ">
+                <Markdown>{elem.answer}</Markdown>
+              </p>
             </div>
             <div className="p-4  bg-lightCream mt-2 rounded-lg">
               <p className="text-gray font-bold mb-2">Your draft answer:</p>
@@ -285,7 +288,9 @@ export default function ApplicationPage() {
             {elem.feedback && (
               <div className="bg-[#FFE7DA] border-[#D2D2D2] mt-4 p-4 rounded">
                 <p className="text-gray font-bold">Points of improvement:</p>
-                <p className="mt-2 ">{elem.feedback}</p>
+                <p className="mt-2 ">
+                  <Markdown>{elem.feedback}</Markdown>
+                </p>
               </div>
             )}
           </div>
