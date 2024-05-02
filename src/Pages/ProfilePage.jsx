@@ -4,8 +4,9 @@ import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db } from "../firebase.config";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
-import * as PDFJS from "/js/pdfjs-dist/build/pdf.min.mjs?url";
+import pdfToText from "react-pdftotext";
 
+// import PDFJSStatic from "pdfjs-dist/build/pdf.worker.min";
 import {
   collection,
   doc,
@@ -51,6 +52,7 @@ export default function ProfilePage() {
     const userDataResponse = docSnap.data();
     console.log(userDataResponse);
     setIsLoading(false);
+    setUserData(userDataResponse);
 
     setResumeLink(userDataResponse.resumeLink);
     if (userDataResponse.aboutYourself) {
@@ -67,38 +69,38 @@ export default function ProfilePage() {
     }
   }, [uid]);
 
-  const uploadFileToGeminiandGetContext = async () => {
-    const resumePdfImages = await pdfToImageConverter();
-    console.log(resumePDFImages);
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(API_KEY);
-    console.log("uploading");
-    let resumeParts = [];
+  // const uploadFileToGeminiandGetContext = async () => {
+  //   const resumePdfImages = await pdfToImageConverter();
+  //   console.log(resumePDFImages);
+  //   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  //   const genAI = new GoogleGenerativeAI(API_KEY);
+  //   console.log("uploading");
+  //   let resumeParts = [];
 
-    resumePdfImages.map((image) => {
-      const delimiter = "data:image/png;base64,";
-      let temp = {
-        inlineData: {
-          data: image.slice(delimiter.length),
-          mimeType: "image/png",
-        },
-      };
-      resumeParts.push(temp);
-    });
+  //   resumePdfImages.map((image) => {
+  //     const delimiter = "data:image/png;base64,";
+  //     let temp = {
+  //       inlineData: {
+  //         data: image.slice(delimiter.length),
+  //         mimeType: "image/png",
+  //       },
+  //     };
+  //     resumeParts.push(temp);
+  //   });
 
-    console.log("uploading finished");
+  //   console.log("uploading finished");
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
+  //   const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro-latest" });
 
-    const prompt = "Extract every text content from this file as text.";
-    console.log("getting response...");
-    console.log(resumeParts);
-    const result = await model.generateContent([prompt, ...resumeParts]);
-    const response = await result.response;
-    const text = response.text();
-    console.log(text);
-    return text;
-  };
+  //   const prompt = "Extract every text content from this file as text.";
+  //   console.log("getting response...");
+  //   console.log(resumeParts);
+  //   const result = await model.generateContent([prompt, ...resumeParts]);
+  //   const response = await result.response;
+  //   const text = response.text();
+  //   console.log(text);
+  //   return text;
+  // };
 
   async function fileToGenerativePart(file) {
     const base64EncodedDataPromise = new Promise((resolve) => {
@@ -117,8 +119,6 @@ export default function ProfilePage() {
       success: <b>Profile Updated!</b>,
       error: <b>Could not save.</b>,
     });
-
-    getUserData();
   };
 
   const updateData = async () => {
@@ -132,7 +132,7 @@ export default function ProfilePage() {
         console.log("Uploaded resume!");
       });
 
-      resumeText = await uploadFileToGeminiandGetContext();
+      resumeText = await getTextFromPDF();
     }
 
     // await uploadAboutYourselfFiles();
@@ -143,8 +143,9 @@ export default function ProfilePage() {
       resumeLink: resumeLink,
       aboutYourself: aboutYourself,
       additionalFilesLinks: additionalFilesLinks,
-      resumeText: resumeText,
+      resumeText: resumeText.length > 0 ? resumeText : userData.resumeText,
     });
+    getUserData();
   };
 
   const uploadAboutYourselfFiles = async () => {
@@ -180,32 +181,40 @@ export default function ProfilePage() {
     }
   };
 
-  const pdfToImageConverter = async () => {
-    console.log(PDFJS);
-    PDFJS.GlobalWorkerOptions.workerSrc =
-      "./js/pdfjs-dist/build/pdf.worker.min.mjs";
-    const uri = URL.createObjectURL(resumeFile);
-    var pdf = await PDFJS.getDocument({ url: uri }).promise;
+  // const pdfToImageConverter = async () => {
+  //   // PDFJS.GlobalWorkerOptions.workerSrc = "./assets/js/pdf.worker.js";
+  //   const pdfJS = await import("pdfjs-dist");
+  //   // pdfJS.GlobalWorkerOptions.workerSrc = PDFJSStatic;
+  //   console.log(pdfJS);
 
-    const imagesList = [];
-    const canvas = document.createElement("canvas");
-    canvas.setAttribute("className", "canv");
-    for (let i = 1; i <= pdf.numPages; i++) {
-      var page = await pdf.getPage(i);
-      var viewport = page.getViewport({ scale: 1 });
-      canvas.height = viewport.height;
-      canvas.width = viewport.width;
-      var render_context = {
-        canvasContext: canvas.getContext("2d"),
-        viewport: viewport,
-      };
-      console.log("page lenght", pdf.numPages);
-      await page.render(render_context).promise;
-      let img = canvas.toDataURL("image/png");
-      imagesList.push(img);
-    }
+  //   const uri = URL.createObjectURL(resumeFile);
+  //   var pdf = await PDFJS.getDocument({ url: uri }).promise;
 
-    return imagesList;
+  //   const imagesList = [];
+  //   const canvas = document.createElement("canvas");
+  //   canvas.setAttribute("className", "canv");
+  //   for (let i = 1; i <= pdf.numPages; i++) {
+  //     var page = await pdf.getPage(i);
+  //     var viewport = page.getViewport({ scale: 1 });
+  //     canvas.height = viewport.height;
+  //     canvas.width = viewport.width;
+  //     var render_context = {
+  //       canvasContext: canvas.getContext("2d"),
+  //       viewport: viewport,
+  //     };
+  //     console.log("page lenght", pdf.numPages);
+  //     await page.render(render_context).promise;
+  //     let img = canvas.toDataURL("image/png");
+  //     imagesList.push(img);
+  //   }
+
+  //   return imagesList;
+  // };
+
+  const getTextFromPDF = async () => {
+    const resumeText = await pdfToText(resumeFile);
+    console.log(resumeText);
+    return resumeText;
   };
 
   return (

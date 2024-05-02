@@ -19,48 +19,56 @@ export default function ApplicationPage() {
   const [userData, setUserData] = useState([]);
   const [applicationData, setApplicationData] = useState([]);
   const [questionsAndAnswers, setQuestionsAndAnswers] = useState([]);
+  const [showErrMessage, setShowErrMessage] = useState(false);
 
   const getAIInput = async () => {
     setIsLoading(true);
-    const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-    const genAI = new GoogleGenerativeAI(API_KEY);
 
-    const model = genAI.getGenerativeModel({
-      model: "gemini-1.5-pro-latest",
-    });
-    const chat = model.startChat({
-      history: [
-        {
-          role: "user",
-          parts: [{ text: systemInstruction }],
-        },
-      ],
-    });
+    try {
+      const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+      const genAI = new GoogleGenerativeAI(API_KEY);
 
-    const resumePrompt = `Here's my resume information ${userData?.resumeText}.`;
+      const model = genAI.getGenerativeModel({
+        model: "gemini-1.5-pro-latest",
+      });
+      const chat = model.startChat({
+        history: [
+          {
+            role: "user",
+            parts: [{ text: systemInstruction }],
+          },
+        ],
+      });
 
-    const prompt = `Here's my resume information ${
-      userData?.resumeText
-    }. Here are  some personal information about me ${
-      userData?.aboutYourself?.text
+      const resumePrompt = `Here's my resume information ${userData?.resumeText}.`;
+
+      const prompt = `Here's my resume information ${
+        userData?.resumeText
+      }. Here are  some personal information about me ${
+        userData?.aboutYourself?.text
+      }
+      You have to answer these questions about me for a university applications ${applicationData?.questions?.join()} , ${
+        applicationData?.queries
+      }.
+     
+      return as an array of objects having keys "question" and "answers" or requirements and nothing else, so that i can convert your string response to a json variable
+      `;
+      const result = await chat.sendMessage(prompt);
+      const response = await result.response;
+      let text = response.text();
+      console.log(text);
+      text = text.slice(7);
+      text = text.slice(0, text.length - 5);
+      const responseJson = JSON.parse(text);
+      console.log(responseJson);
+      // console.log(responseJson);
+      setQuestionsAndAnswers(responseJson);
+      setIsLoading(false);
+      setShowErrMessage(false);
+    } catch (err) {
+      setIsLoading(false);
+      setShowErrMessage(true);
     }
-    You have to answer these questions about me for a university applications ${applicationData?.questions?.join()} , ${
-      applicationData?.queries
-    }.
-   
-    return as an array of objects having keys "question" and "answers" or requirements and nothing else, so that i can convert your string response to a json variable
-    `;
-    const result = await chat.sendMessage(prompt);
-    const response = await result.response;
-    let text = response.text();
-    console.log(text)
-    text = text.slice(7);
-    text = text.slice(0, text.length - 5);
-    const responseJson = JSON.parse(text);
-    console.log(responseJson);
-    // console.log(responseJson);
-    setQuestionsAndAnswers(responseJson);
-    setIsLoading(false);
   };
 
   const getUserData = async () => {
@@ -112,6 +120,13 @@ export default function ApplicationPage() {
           {applicationData.uniName}
         </p>
       </div>
+      {showErrMessage && (
+        <div>
+          <p className="text-red mt-4 font-bold text-xl text-center">
+            There was error retrieving your data. Try refreshing the page.
+          </p>
+        </div>
+      )}
       <div>
         {questionsAndAnswers.map((elem) => (
           <div className="my-8">
