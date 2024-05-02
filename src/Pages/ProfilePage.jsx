@@ -1,4 +1,8 @@
-import { faClose, faUpload } from "@fortawesome/free-solid-svg-icons";
+import {
+  faClose,
+  faMicrophone,
+  faUpload,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +23,7 @@ import { UserContext } from "../contexts/UserContext";
 import toast from "react-hot-toast";
 import { getStorage, ref, uploadBytes } from "firebase/storage";
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import VoiceModule from "../Components/VoiceModule";
 
 export default function ProfilePage() {
   const navigate = useNavigate();
@@ -38,6 +43,8 @@ export default function ProfilePage() {
   });
   const [resumeLink, setResumeLink] = useState("");
   const [resumeFile, setResumeFile] = useState({});
+
+  const [openVoiceModule, setOpenVoiceModule] = useState(false);
 
   const [aboutYourselfFiles, setAboutYourselfFiles] = useState([]);
 
@@ -218,7 +225,13 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="mb-32">
+    <div className="pb-32">
+      <VoiceModule
+      setAboutYourself={setAboutYourself}
+        openVoiceModule={openVoiceModule}
+        setOpenVoiceModule={setOpenVoiceModule}
+        aboutYourself={aboutYourself}
+      />
       <button
         className="bg-red px-4 py-1 rounded text-white font-bold md:hidden"
         onClick={() => {
@@ -281,18 +294,25 @@ export default function ProfilePage() {
               onChange={(e) => {
                 setAboutYourself({ ...aboutYourself, text: e.target.value });
               }}
-              placeholder="Type, upload a file or feel free to speak about yourself here "
+              placeholder="Type feel free to speak about yourself here "
               className="w-full  outline-none bg-lightCream rounded  min-h-[40vh] resize-none text-[#3D3929]"
             ></textarea>
-            {/* <div className="flex justify-end mr-1">
-              <FontAwesomeIcon
+            <div className="flex justify-end mr-1">
+              {/* <FontAwesomeIcon
                 icon={faUpload}
                 className="text-darkBlue text-xl cursor-pointer p-2 rounded-full hover:bg-gray/[.2]"
                 onClick={() => {
                   uploadAboutYourselfRef.current.click();
                 }}
+              /> */}
+              <FontAwesomeIcon
+                icon={faMicrophone}
+                className="text-darkBlue text-xl cursor-pointer p-2 rounded-full hover:bg-gray/[.2]"
+                onClick={() => {
+                  setOpenVoiceModule(true);
+                }}
               />
-            </div> */}
+            </div>
           </div>
           {/* <div className="mt-4">
             <p className="text-gray text-sm font-bold ">Uploaded files</p>
@@ -355,7 +375,7 @@ export default function ProfilePage() {
             ))}
           </div>
         </div> */}
-         <div className="flex justify-end mt-8">
+        <div className="flex justify-end mt-8">
           <button
             onClick={submitData}
             className="bg-darkBlue text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"

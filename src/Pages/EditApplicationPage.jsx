@@ -161,7 +161,7 @@ export default function EditApplicationPage() {
   }, [applicationId, uid]);
 
   return (
-    <div className="mb-32">
+    <div className="pb-32">
       <div className="flex mt-8">
         <Link
           to={`/application/${applicationId}`}
@@ -293,8 +293,7 @@ export default function EditApplicationPage() {
           className="w-full outline-none text-[#3D3929] bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
 
-
-<div className="flex justify-end">
+        <div className="flex justify-end">
           <button
             onClick={submitData}
             className="bg-darkBlue mt-8 text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"

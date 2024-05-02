@@ -110,7 +110,7 @@ export default function NewApplicationPage() {
   }, [applicationId]);
 
   return (
-    <div className="mb-32">
+    <div className="pb-32">
       <h1 className="text-3xl mt-10 font-semibold text-gray">
         New Application Info
       </h1>
@@ -223,11 +223,10 @@ export default function NewApplicationPage() {
             }));
           }}
           placeholder="Type the questions you see in your portal separted by commas"
-
           className="w-full text-[#3D3929] outline-none bg-lightCream rounded  min-h-[40vh] resize-none  p-4 mt-2"
         ></textarea>
 
-<div className="flex justify-end mt-8">
+        <div className="flex justify-end mt-8">
           <button
             onClick={submitData}
             className="bg-darkBlue text-white px-6 py-2 rounded hover:bg-opacity-70 duration-150   ease-in-out"
