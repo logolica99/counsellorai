@@ -8,6 +8,7 @@ import ProtectedSite from "./Components/ProtectedSite.jsx";
 import LoginPage from "./Pages/LoginPage.jsx";
 import DashboardPage from "./Pages/DashboardPage.jsx";
 import { app } from "./firebase.config.js";
+import EditApplicationPage from "./Pages/EditApplicationPage.jsx";
 
 function App() {
   return (
@@ -45,6 +46,14 @@ function App() {
             element={
               <ProtectedSite>
                 <ApplicationPage />
+              </ProtectedSite>
+            }
+          />
+          <Route
+            path="/edit-application/:applicationId"
+            element={
+              <ProtectedSite>
+                <EditApplicationPage />
               </ProtectedSite>
             }
           />

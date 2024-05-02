@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { formatTime, systemInstruction } from "../helpers";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faAdd,
@@ -20,6 +20,8 @@ export default function ApplicationPage() {
   const [applicationData, setApplicationData] = useState([]);
   const [questionsAndAnswers, setQuestionsAndAnswers] = useState([]);
   const [showErrMessage, setShowErrMessage] = useState(false);
+
+  let [searchParams, setSearchParams] = useSearchParams();
 
   const getAIInput = async () => {
     setIsLoading(true);
@@ -126,18 +128,29 @@ export default function ApplicationPage() {
       !applicationData.questionsAndAnswers
     ) {
       getAIInput();
+    } else if (searchParams.get("generate") == "true") {
+      getAIInput();
     }
-  }, [userData, applicationData]);
+  }, [userData, applicationData, searchParams]);
 
   return (
     <div className="mt-16">
-      <div className="flex ">
+      <div className="flex gap-8">
         <Link
           to="/dashboard"
           className="flex gap-4 items-center  bg-lightCream border border-cream px-4 py-1 rounded "
         >
           <FontAwesomeIcon icon={faChevronLeft} className="text-gray" />
           <p className="text-gray font-semibold text-lg">Dashboard</p>
+        </Link>
+
+        <Link
+          to={`/edit-application/${applicationId}`}
+          className="flex gap-4 items-center  bg-lightCream border border-cream px-4 py-1 rounded "
+        >
+          <p className="text-gray font-semibold text-lg">
+            Edit your application
+          </p>
         </Link>
       </div>
       <div className="mt-6">
@@ -155,7 +168,7 @@ export default function ApplicationPage() {
       <div>
         {questionsAndAnswers.map((elem) => (
           <div className="my-8">
-            <div className="flex gap-4 items-center">
+            <div className="flex flex-col md:flex-row gap-1 md:gap-4 md:items-center">
               <p className="text-xl text-green-700 font-semibold">Question:</p>
               <p className="text-gray font-semibold">{elem.question}</p>
             </div>
