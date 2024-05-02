@@ -52,11 +52,11 @@ export default function ApplicationPage() {
       }. Here are  some personal information about me ${
         userData?.aboutYourself?.text
       }
-      You have to provide suggestions for  these questions about me for a university applications, ${applicationData?.questions?.join()} , ${
+      You have to provide suggestions for  these questions  about me for a university applications and don't answer anything directly, ${applicationData?.questions?.join()} , ${
         applicationData?.queries
       }.
      
-      return as an array of objects having keys "question" and "answer" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response and don't provide \`\`\`json infront of your answer. i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. just pure answer.
+      return as an array of objects having keys "question" and "answer" or requirements and nothing else, so that i can convert your string response to a json variable. make sure I can run JSON.parse() on your response . i just want an array please. don't try to write any content in markdown form. no text formating feature neeed like bolding or styling. just pure answer.
       `;
       const result = await chat.sendMessage(prompt);
       const response = await result.response;
